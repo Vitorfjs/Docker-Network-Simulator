@@ -1,0 +1,51 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: client
+    networks:
+      client_network:
+        ipv4_address: 192.168.10.10
+    cap_add:
+      - NET_ADMIN
+  
+  server:
+    build: 
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: server
+    networks:
+      server_network:
+        ipv4_address: 192.168.20.10
+    cap_add:
+      - NET_ADMIN 
+
+
+  router:
+    build:
+      context: .
+      dockerfile: Dockerfile.router
+    container_name: router
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      client_network:
+        ipv4_address: 192.168.10.2
+      server_network:
+        ipv4_address: 192.168.20.2
+    cap_add:
+      - NET_ADMIN
+
+networks:
+  client_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+
+  server_network: 
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.20.0/24
