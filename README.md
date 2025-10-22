@@ -15,6 +15,12 @@ O objetivo é demonstrar como ocorre o roteamento, resolução de nomes via DNS 
 | client2    | Cliente 2 | 192.168.10.20 | client_network | client2.empresa.local |
 | client3    | Cliente 3 | 192.168.10.30 | client_network | client3.empresa.local |
 
+## 🧩 Topologia da Rede
+
+Abaixo está a topologia do ambiente Docker que simula uma rede corporativa com clientes, servidor e roteador:
+
+![Topologia da Rede](./diagram.png)
+
 ---
 
 ## ⚙️ Funcionalidades
