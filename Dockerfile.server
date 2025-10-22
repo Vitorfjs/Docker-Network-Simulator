@@ -1,11 +1,12 @@
-FROM nginx:alpine
+FROM alpine:latest
 
-RUN apk add --no-cache iproute2 iputils
+RUN apk add --no-cache dnsmasq iproute2 iputils-ping curl net-tools
 
-RUN echo '#!/bin/sh\n' \
-         'ip route add 192.168.10.0/24 via 192.168.20.2 || true\n' \
-         'exec "$@"' > /entrypoint.sh && chmod +x /entrypoint.sh
+COPY dnsmaq.conf /etc/dnsmasq.conf
 
-ENTRYPOINT ["/entrypoint.sh"]
+COPY entrypoint-server.sh /entrypoint-server.sh
+RUN chmod +x /entrypoint-server.sh
 
-CMD ["tail", "-f", "/dev/null"]
+EXPOSE 53/udp
+
+ENTRYPOINT [ "/entrypoint-server.sh" ]
