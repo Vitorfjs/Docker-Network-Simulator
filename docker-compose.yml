@@ -1,15 +1,4 @@
 services:
-  client:
-    build:
-      context: .
-      dockerfile: Dockerfile.client
-    container_name: client
-    networks:
-      client_network:
-        ipv4_address: 192.168.10.10
-    cap_add:
-      - NET_ADMIN
-  
   server:
     build: 
       context: .
@@ -20,7 +9,6 @@ services:
         ipv4_address: 192.168.20.10
     cap_add:
       - NET_ADMIN 
-
 
   router:
     build:
@@ -36,6 +24,54 @@ services:
         ipv4_address: 192.168.20.2
     cap_add:
       - NET_ADMIN
+
+  client1:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: client1
+    networks:
+      client_network:
+        ipv4_address: 192.168.10.10
+    cap_add:
+      - NET_ADMIN
+    dns: 
+      - 192.168.20.10
+    depends_on:
+      - router
+      - server
+    
+  client2:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: client2
+    networks:
+      client_network:
+        ipv4_address: 192.168.10.20
+    cap_add:
+      - NET_ADMIN
+    dns: 
+      - 192.168.20.10
+    depends_on:
+      - router
+      - server
+
+  client3:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: client3
+    networks:
+      client_network:
+        ipv4_address: 192.168.10.30
+    cap_add:
+      - NET_ADMIN
+    dns: 
+      - 192.168.20.10
+    depends_on:
+      - router
+      - server
 
 networks:
   client_network:
